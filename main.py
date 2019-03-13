@@ -131,11 +131,9 @@ def print_statistics(salary_report, report_title):
     table_data = [
         ["Язык программирования", "Вакансий найдено", "Вакансий обработано", "Средняя зарплата"]
     ]
-    for item in salary_report.items():
-        language = item[0]
-        vacancy_stats_info = [*item[1].values()]
-        row_data = [language, *vacancy_stats_info]
-        table_data.append(row_data)
+    for language, stats in salary_report.items():
+        vacancy_stats_info = [*stats.values()]
+        table_data.append([language, *vacancy_stats_info])
 
     table = AsciiTable(table_data)
     table.title = report_title
