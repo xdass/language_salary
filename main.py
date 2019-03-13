@@ -19,7 +19,6 @@ def fetch_hh_vacancies(language):
                 "page": page,
             })
         pages = response.json().get('pages')
-        print(f"Скачиваем информацию по {language} со страницы {page}")
         vacancies_list.extend(response.json()['items'])
         page += 1
     return vacancies_list
@@ -36,11 +35,7 @@ def get_predict_rub_salary_hh(vacancy):
 
 
 def get_avg_salary(vacancies_predicted_salary):
-    vacancies_avg_salary = []
-    for predict_salary in vacancies_predicted_salary:
-        if predict_salary:
-            vacancies_avg_salary.append(predict_salary)
-
+    vacancies_avg_salary = [predict_salary for predict_salary in vacancies_predicted_salary if predict_salary]
     language_avg_salary = int(sum(vacancies_avg_salary) / len(vacancies_avg_salary))
     return language_avg_salary, len(vacancies_avg_salary)
 
@@ -69,9 +64,7 @@ def fetch_superjob_vacancies(language):
     more = True
     page = 0
     vacancies_list = []
-    while True:
-        if not bool(more):
-            break
+    while more:
         response = requests.get(
             api_url,
             headers=headers,
@@ -82,7 +75,6 @@ def fetch_superjob_vacancies(language):
                 "page": page
             })
         more = response.json().get('more')
-        print(f"Скачиваем информацию по {language} со страницы {page}")
         vacancies_list.extend(response.json()['objects'])
         page += 1
     return vacancies_list
@@ -140,7 +132,10 @@ def print_statistics(salary_report, report_title):
         ["Язык программирования", "Вакансий найдено", "Вакансий обработано", "Средняя зарплата"]
     ]
     for item in salary_report.items():
-        table_data.append([item[0], *item[1].values()])
+        language = item[0]
+        vacancy_stats_info = [*item[1].values()]
+        row_data = [language, *vacancy_stats_info]
+        table_data.append(row_data)
 
     table = AsciiTable(table_data)
     table.title = report_title
