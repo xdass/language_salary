@@ -132,8 +132,7 @@ def print_statistics(salary_report, report_title):
         ["Язык программирования", "Вакансий найдено", "Вакансий обработано", "Средняя зарплата"]
     ]
     for language, stats in salary_report.items():
-        vacancy_stats_info = [*stats.values()]
-        table_data.append([language, *vacancy_stats_info])
+        table_data.append([language, *stats.values()])
 
     table = AsciiTable(table_data)
     table.title = report_title
@@ -151,7 +150,7 @@ if __name__ == '__main__':
         "Go"
     ]
     load_dotenv()
-    hh_salary_report = generate_hh_vacancies_report(most_popular_languages)
+    #hh_salary_report = generate_hh_vacancies_report(most_popular_languages)
     sj_salary_report = generate_sj_vacancies_report(most_popular_languages)
     print_statistics(sj_salary_report, "SuperJob Moscow")
-    print_statistics(hh_salary_report, "HeadHunter Moscow")
+    #print_statistics(hh_salary_report, "HeadHunter Moscow")
